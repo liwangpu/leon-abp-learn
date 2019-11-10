@@ -1,6 +1,6 @@
 import { browser, element, by } from 'protractor';
 
-export class MyAbpTemplatePage {
+export class MyAbpLearnTemplatePage {
   navigateTo() {
     return browser.get('/');
   }

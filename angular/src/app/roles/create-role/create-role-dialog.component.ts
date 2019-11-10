@@ -6,10 +6,9 @@ import { AppComponentBase } from '@shared/app-component-base';
 import {
   RoleServiceProxy,
   RoleDto,
-
+  ListResultDtoOfPermissionDto,
   PermissionDto,
-  CreateRoleDto,
-  PermissionDtoListResultDto
+  CreateRoleDto
 } from '@shared/service-proxies/service-proxies';
 
 @Component({
@@ -45,7 +44,7 @@ export class CreateRoleDialogComponent extends AppComponentBase
   ngOnInit(): void {
     this._roleService
       .getAllPermissions()
-      .subscribe((result: PermissionDtoListResultDto) => {
+      .subscribe((result: ListResultDtoOfPermissionDto) => {
         this.permissions = result.items;
         this.setInitialPermissionsStatus();
       });
@@ -71,7 +70,7 @@ export class CreateRoleDialogComponent extends AppComponentBase
 
   getCheckedPermissions(): string[] {
     const permissions: string[] = [];
-    _.forEach(this.checkedPermissionsMap, function (value, key) {
+    _.forEach(this.checkedPermissionsMap, function(value, key) {
       if (value) {
         permissions.push(key);
       }

@@ -4,6 +4,6 @@
 .vs/
 obj/
 bin/
-aspnet-core/src/MyAbp.Web.Host/App_Data/Logs/
-aspnet-core/src/MyAbp.Web.Mvc/App_Data/Logs/
-aspnet-core/src/MyAbp.Migrator/Logs/Logs.txt
+aspnet-core/src/MyAbpLearn.Web.Host/App_Data/Logs/
+aspnet-core/src/MyAbpLearn.Web.Mvc/App_Data/Logs/
+aspnet-core/src/MyAbpLearn.Migrator/Logs/Logs.txt

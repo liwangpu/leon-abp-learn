@@ -1,10 +1,10 @@
-import { MyAbpTemplatePage } from './app.po';
+import { MyAbpLearnTemplatePage } from './app.po';
 
-describe('MyAbp App', function() {
-  let page: MyAbpTemplatePage;
+describe('MyAbpLearn App', function() {
+  let page: MyAbpLearnTemplatePage;
 
   beforeEach(() => {
-    page = new MyAbpTemplatePage();
+    page = new MyAbpLearnTemplatePage();
   });
 
   it('should display message saying app works', () => {

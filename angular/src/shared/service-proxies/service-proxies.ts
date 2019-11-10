@@ -28,22 +28,22 @@ export class AccountServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    isTenantAvailable(body: IsTenantAvailableInput | undefined): Observable<IsTenantAvailableOutput> {
+    isTenantAvailable(input: IsTenantAvailableInput | null | undefined): Observable<IsTenantAvailableOutput> {
         let url_ = this.baseUrl + "/api/services/app/Account/IsTenantAvailable";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -84,22 +84,22 @@ export class AccountServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    register(body: RegisterInput | undefined): Observable<RegisterOutput> {
+    register(input: RegisterInput | null | undefined): Observable<RegisterOutput> {
         let url_ = this.baseUrl + "/api/services/app/Account/Register";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -152,21 +152,21 @@ export class ConfigurationServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    changeUiTheme(body: ChangeUiThemeInput | undefined): Observable<void> {
+    changeUiTheme(input: ChangeUiThemeInput | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Configuration/ChangeUiTheme";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
+                "Content-Type": "application/json", 
             })
         };
 
@@ -216,22 +216,22 @@ export class RoleServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    create(body: CreateRoleDto | undefined): Observable<RoleDto> {
+    create(input: CreateRoleDto | null | undefined): Observable<RoleDto> {
         let url_ = this.baseUrl + "/api/services/app/Role/Create";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -275,11 +275,9 @@ export class RoleServiceProxy {
      * @param permission (optional) 
      * @return Success
      */
-    getRoles(permission: string | undefined): Observable<RoleListDtoListResultDto> {
-        let url_ = this.baseUrl + "/api/services/app/Role/GetRoles?";
-        if (permission === null)
-            throw new Error("The parameter 'permission' cannot be null.");
-        else if (permission !== undefined)
+    getRoles(permission: string | null | undefined): Observable<ListResultDtoOfRoleListDto> {
+        let url_ = this.baseUrl + "/api/services/app/Role/GetRolesAsync?";
+        if (permission !== undefined)
             url_ += "Permission=" + encodeURIComponent("" + permission) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -287,7 +285,7 @@ export class RoleServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -298,14 +296,14 @@ export class RoleServiceProxy {
                 try {
                     return this.processGetRoles(<any>response_);
                 } catch (e) {
-                    return <Observable<RoleListDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<ListResultDtoOfRoleListDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<RoleListDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<ListResultDtoOfRoleListDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetRoles(response: HttpResponseBase): Observable<RoleListDtoListResultDto> {
+    protected processGetRoles(response: HttpResponseBase): Observable<ListResultDtoOfRoleListDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -316,7 +314,7 @@ export class RoleServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RoleListDtoListResultDto.fromJS(resultData200);
+            result200 = ListResultDtoOfRoleListDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -324,26 +322,26 @@ export class RoleServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<RoleListDtoListResultDto>(<any>null);
+        return _observableOf<ListResultDtoOfRoleListDto>(<any>null);
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    update(body: RoleDto | undefined): Observable<RoleDto> {
+    update(input: RoleDto | null | undefined): Observable<RoleDto> {
         let url_ = this.baseUrl + "/api/services/app/Role/Update";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -387,11 +385,9 @@ export class RoleServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    delete(id: number | undefined): Observable<void> {
+    delete(id: number | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Role/Delete?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
+        if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -438,7 +434,7 @@ export class RoleServiceProxy {
     /**
      * @return Success
      */
-    getAllPermissions(): Observable<PermissionDtoListResultDto> {
+    getAllPermissions(): Observable<ListResultDtoOfPermissionDto> {
         let url_ = this.baseUrl + "/api/services/app/Role/GetAllPermissions";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -446,7 +442,7 @@ export class RoleServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -457,14 +453,14 @@ export class RoleServiceProxy {
                 try {
                     return this.processGetAllPermissions(<any>response_);
                 } catch (e) {
-                    return <Observable<PermissionDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<ListResultDtoOfPermissionDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<PermissionDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<ListResultDtoOfPermissionDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAllPermissions(response: HttpResponseBase): Observable<PermissionDtoListResultDto> {
+    protected processGetAllPermissions(response: HttpResponseBase): Observable<ListResultDtoOfPermissionDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -475,7 +471,7 @@ export class RoleServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = PermissionDtoListResultDto.fromJS(resultData200);
+            result200 = ListResultDtoOfPermissionDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -483,18 +479,16 @@ export class RoleServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<PermissionDtoListResultDto>(<any>null);
+        return _observableOf<ListResultDtoOfPermissionDto>(<any>null);
     }
 
     /**
      * @param id (optional) 
      * @return Success
      */
-    getRoleForEdit(id: number | undefined): Observable<GetRoleForEditOutput> {
+    getRoleForEdit(id: number | null | undefined): Observable<GetRoleForEditOutput> {
         let url_ = this.baseUrl + "/api/services/app/Role/GetRoleForEdit?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
+        if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -502,7 +496,7 @@ export class RoleServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -546,11 +540,9 @@ export class RoleServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    get(id: number | undefined): Observable<RoleDto> {
+    get(id: number | null | undefined): Observable<RoleDto> {
         let url_ = this.baseUrl + "/api/services/app/Role/Get?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
+        if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -558,7 +550,7 @@ export class RoleServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -604,19 +596,13 @@ export class RoleServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(keyword: string | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<RoleDtoPagedResultDto> {
+    getAll(keyword: string | null | undefined, skipCount: number | null | undefined, maxResultCount: number | null | undefined): Observable<PagedResultDtoOfRoleDto> {
         let url_ = this.baseUrl + "/api/services/app/Role/GetAll?";
-        if (keyword === null)
-            throw new Error("The parameter 'keyword' cannot be null.");
-        else if (keyword !== undefined)
+        if (keyword !== undefined)
             url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&"; 
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
+        if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
+        if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -624,7 +610,7 @@ export class RoleServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -635,14 +621,14 @@ export class RoleServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<RoleDtoPagedResultDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfRoleDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<RoleDtoPagedResultDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfRoleDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<RoleDtoPagedResultDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfRoleDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -653,7 +639,7 @@ export class RoleServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RoleDtoPagedResultDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfRoleDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -661,7 +647,7 @@ export class RoleServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<RoleDtoPagedResultDto>(<any>null);
+        return _observableOf<PagedResultDtoOfRoleDto>(<any>null);
     }
 }
 
@@ -687,7 +673,7 @@ export class SessionServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -740,22 +726,22 @@ export class TenantServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    create(body: CreateTenantDto | undefined): Observable<TenantDto> {
+    create(input: CreateTenantDto | null | undefined): Observable<TenantDto> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/Create";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -799,11 +785,9 @@ export class TenantServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    delete(id: number | undefined): Observable<void> {
+    delete(id: number | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/Delete?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
+        if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -851,11 +835,9 @@ export class TenantServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    get(id: number | undefined): Observable<TenantDto> {
+    get(id: number | null | undefined): Observable<TenantDto> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/Get?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
+        if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -863,7 +845,7 @@ export class TenantServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -910,23 +892,15 @@ export class TenantServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(keyword: string | undefined, isActive: boolean | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<TenantDtoPagedResultDto> {
+    getAll(keyword: string | null | undefined, isActive: boolean | null | undefined, skipCount: number | null | undefined, maxResultCount: number | null | undefined): Observable<PagedResultDtoOfTenantDto> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/GetAll?";
-        if (keyword === null)
-            throw new Error("The parameter 'keyword' cannot be null.");
-        else if (keyword !== undefined)
+        if (keyword !== undefined)
             url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&"; 
-        if (isActive === null)
-            throw new Error("The parameter 'isActive' cannot be null.");
-        else if (isActive !== undefined)
+        if (isActive !== undefined)
             url_ += "IsActive=" + encodeURIComponent("" + isActive) + "&"; 
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
+        if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
+        if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -934,7 +908,7 @@ export class TenantServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -945,14 +919,14 @@ export class TenantServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<TenantDtoPagedResultDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfTenantDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<TenantDtoPagedResultDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfTenantDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<TenantDtoPagedResultDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfTenantDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -963,7 +937,7 @@ export class TenantServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = TenantDtoPagedResultDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfTenantDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -971,26 +945,26 @@ export class TenantServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<TenantDtoPagedResultDto>(<any>null);
+        return _observableOf<PagedResultDtoOfTenantDto>(<any>null);
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    update(body: TenantDto | undefined): Observable<TenantDto> {
+    update(input: TenantDto | null | undefined): Observable<TenantDto> {
         let url_ = this.baseUrl + "/api/services/app/Tenant/Update";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1043,22 +1017,22 @@ export class TokenAuthServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param model (optional) 
      * @return Success
      */
-    authenticate(body: AuthenticateModel | undefined): Observable<AuthenticateResultModel> {
+    authenticate(model: AuthenticateModel | null | undefined): Observable<AuthenticateResultModel> {
         let url_ = this.baseUrl + "/api/TokenAuth/Authenticate";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(model);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1109,7 +1083,7 @@ export class TokenAuthServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -1154,22 +1128,22 @@ export class TokenAuthServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param model (optional) 
      * @return Success
      */
-    externalAuthenticate(body: ExternalAuthenticateModel | undefined): Observable<ExternalAuthenticateResultModel> {
+    externalAuthenticate(model: ExternalAuthenticateModel | null | undefined): Observable<ExternalAuthenticateResultModel> {
         let url_ = this.baseUrl + "/api/TokenAuth/ExternalAuthenticate";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(model);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1222,22 +1196,22 @@ export class UserServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    create(body: CreateUserDto | undefined): Observable<UserDto> {
+    create(input: CreateUserDto | null | undefined): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/services/app/User/Create";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1278,22 +1252,22 @@ export class UserServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    update(body: UserDto | undefined): Observable<UserDto> {
+    update(input: UserDto | null | undefined): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/services/app/User/Update";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1337,11 +1311,9 @@ export class UserServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    delete(id: number | undefined): Observable<void> {
+    delete(id: number | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/User/Delete?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
+        if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1388,7 +1360,7 @@ export class UserServiceProxy {
     /**
      * @return Success
      */
-    getRoles(): Observable<RoleDtoListResultDto> {
+    getRoles(): Observable<ListResultDtoOfRoleDto> {
         let url_ = this.baseUrl + "/api/services/app/User/GetRoles";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1396,7 +1368,7 @@ export class UserServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -1407,14 +1379,14 @@ export class UserServiceProxy {
                 try {
                     return this.processGetRoles(<any>response_);
                 } catch (e) {
-                    return <Observable<RoleDtoListResultDto>><any>_observableThrow(e);
+                    return <Observable<ListResultDtoOfRoleDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<RoleDtoListResultDto>><any>_observableThrow(response_);
+                return <Observable<ListResultDtoOfRoleDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetRoles(response: HttpResponseBase): Observable<RoleDtoListResultDto> {
+    protected processGetRoles(response: HttpResponseBase): Observable<ListResultDtoOfRoleDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1425,7 +1397,7 @@ export class UserServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = RoleDtoListResultDto.fromJS(resultData200);
+            result200 = ListResultDtoOfRoleDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1433,25 +1405,25 @@ export class UserServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<RoleDtoListResultDto>(<any>null);
+        return _observableOf<ListResultDtoOfRoleDto>(<any>null);
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    changeLanguage(body: ChangeUserLanguageDto | undefined): Observable<void> {
+    changeLanguage(input: ChangeUserLanguageDto | null | undefined): Observable<void> {
         let url_ = this.baseUrl + "/api/services/app/User/ChangeLanguage";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
+                "Content-Type": "application/json", 
             })
         };
 
@@ -1489,22 +1461,22 @@ export class UserServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    changePassword(body: ChangePasswordDto | undefined): Observable<boolean> {
+    changePassword(input: ChangePasswordDto | null | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/services/app/User/ChangePassword";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1545,22 +1517,22 @@ export class UserServiceProxy {
     }
 
     /**
-     * @param body (optional) 
+     * @param input (optional) 
      * @return Success
      */
-    resetPassword(body: ResetPasswordDto | undefined): Observable<boolean> {
+    resetPassword(input: ResetPasswordDto | null | undefined): Observable<boolean> {
         let url_ = this.baseUrl + "/api/services/app/User/ResetPassword";
         url_ = url_.replace(/[?&]$/, "");
 
-        const content_ = JSON.stringify(body);
+        const content_ = JSON.stringify(input);
 
         let options_ : any = {
             body: content_,
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Content-Type": "application/json-patch+json", 
-                "Accept": "text/plain"
+                "Content-Type": "application/json", 
+                "Accept": "application/json"
             })
         };
 
@@ -1604,11 +1576,9 @@ export class UserServiceProxy {
      * @param id (optional) 
      * @return Success
      */
-    get(id: number | undefined): Observable<UserDto> {
+    get(id: number | null | undefined): Observable<UserDto> {
         let url_ = this.baseUrl + "/api/services/app/User/Get?";
-        if (id === null)
-            throw new Error("The parameter 'id' cannot be null.");
-        else if (id !== undefined)
+        if (id !== undefined)
             url_ += "Id=" + encodeURIComponent("" + id) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1616,7 +1586,7 @@ export class UserServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -1663,23 +1633,15 @@ export class UserServiceProxy {
      * @param maxResultCount (optional) 
      * @return Success
      */
-    getAll(keyword: string | undefined, isActive: boolean | undefined, skipCount: number | undefined, maxResultCount: number | undefined): Observable<UserDtoPagedResultDto> {
+    getAll(keyword: string | null | undefined, isActive: boolean | null | undefined, skipCount: number | null | undefined, maxResultCount: number | null | undefined): Observable<PagedResultDtoOfUserDto> {
         let url_ = this.baseUrl + "/api/services/app/User/GetAll?";
-        if (keyword === null)
-            throw new Error("The parameter 'keyword' cannot be null.");
-        else if (keyword !== undefined)
+        if (keyword !== undefined)
             url_ += "Keyword=" + encodeURIComponent("" + keyword) + "&"; 
-        if (isActive === null)
-            throw new Error("The parameter 'isActive' cannot be null.");
-        else if (isActive !== undefined)
+        if (isActive !== undefined)
             url_ += "IsActive=" + encodeURIComponent("" + isActive) + "&"; 
-        if (skipCount === null)
-            throw new Error("The parameter 'skipCount' cannot be null.");
-        else if (skipCount !== undefined)
+        if (skipCount !== undefined)
             url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&"; 
-        if (maxResultCount === null)
-            throw new Error("The parameter 'maxResultCount' cannot be null.");
-        else if (maxResultCount !== undefined)
+        if (maxResultCount !== undefined)
             url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&"; 
         url_ = url_.replace(/[?&]$/, "");
 
@@ -1687,7 +1649,7 @@ export class UserServiceProxy {
             observe: "response",
             responseType: "blob",
             headers: new HttpHeaders({
-                "Accept": "text/plain"
+                "Accept": "application/json"
             })
         };
 
@@ -1698,14 +1660,14 @@ export class UserServiceProxy {
                 try {
                     return this.processGetAll(<any>response_);
                 } catch (e) {
-                    return <Observable<UserDtoPagedResultDto>><any>_observableThrow(e);
+                    return <Observable<PagedResultDtoOfUserDto>><any>_observableThrow(e);
                 }
             } else
-                return <Observable<UserDtoPagedResultDto>><any>_observableThrow(response_);
+                return <Observable<PagedResultDtoOfUserDto>><any>_observableThrow(response_);
         }));
     }
 
-    protected processGetAll(response: HttpResponseBase): Observable<UserDtoPagedResultDto> {
+    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfUserDto> {
         const status = response.status;
         const responseBlob = 
             response instanceof HttpResponse ? response.body : 
@@ -1716,7 +1678,7 @@ export class UserServiceProxy {
             return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = UserDtoPagedResultDto.fromJS(resultData200);
+            result200 = PagedResultDtoOfUserDto.fromJS(resultData200);
             return _observableOf(result200);
             }));
         } else if (status !== 200 && status !== 204) {
@@ -1724,12 +1686,12 @@ export class UserServiceProxy {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             }));
         }
-        return _observableOf<UserDtoPagedResultDto>(<any>null);
+        return _observableOf<PagedResultDtoOfUserDto>(<any>null);
     }
 }
 
 export class IsTenantAvailableInput implements IIsTenantAvailableInput {
-    tenancyName: string | undefined;
+    tenancyName: string;
 
     constructor(data?: IIsTenantAvailableInput) {
         if (data) {
@@ -1768,17 +1730,11 @@ export class IsTenantAvailableInput implements IIsTenantAvailableInput {
 }
 
 export interface IIsTenantAvailableInput {
-    tenancyName: string | undefined;
-}
-
-export enum TenantAvailabilityState {
-    _1 = 1,
-    _2 = 2,
-    _3 = 3,
+    tenancyName: string;
 }
 
 export class IsTenantAvailableOutput implements IIsTenantAvailableOutput {
-    state: TenantAvailabilityState;
+    state: IsTenantAvailableOutputState | undefined;
     tenantId: number | undefined;
 
     constructor(data?: IIsTenantAvailableOutput) {
@@ -1820,16 +1776,16 @@ export class IsTenantAvailableOutput implements IIsTenantAvailableOutput {
 }
 
 export interface IIsTenantAvailableOutput {
-    state: TenantAvailabilityState;
+    state: IsTenantAvailableOutputState | undefined;
     tenantId: number | undefined;
 }
 
 export class RegisterInput implements IRegisterInput {
-    name: string | undefined;
-    surname: string | undefined;
-    userName: string | undefined;
-    emailAddress: string | undefined;
-    password: string | undefined;
+    name: string;
+    surname: string;
+    userName: string;
+    emailAddress: string;
+    password: string;
     captchaResponse: string | undefined;
 
     constructor(data?: IRegisterInput) {
@@ -1879,16 +1835,16 @@ export class RegisterInput implements IRegisterInput {
 }
 
 export interface IRegisterInput {
-    name: string | undefined;
-    surname: string | undefined;
-    userName: string | undefined;
-    emailAddress: string | undefined;
-    password: string | undefined;
+    name: string;
+    surname: string;
+    userName: string;
+    emailAddress: string;
+    password: string;
     captchaResponse: string | undefined;
 }
 
 export class RegisterOutput implements IRegisterOutput {
-    canLogin: boolean;
+    canLogin: boolean | undefined;
 
     constructor(data?: IRegisterOutput) {
         if (data) {
@@ -1927,11 +1883,11 @@ export class RegisterOutput implements IRegisterOutput {
 }
 
 export interface IRegisterOutput {
-    canLogin: boolean;
+    canLogin: boolean | undefined;
 }
 
 export class ChangeUiThemeInput implements IChangeUiThemeInput {
-    theme: string | undefined;
+    theme: string;
 
     constructor(data?: IChangeUiThemeInput) {
         if (data) {
@@ -1970,12 +1926,12 @@ export class ChangeUiThemeInput implements IChangeUiThemeInput {
 }
 
 export interface IChangeUiThemeInput {
-    theme: string | undefined;
+    theme: string;
 }
 
 export class CreateRoleDto implements ICreateRoleDto {
-    name: string | undefined;
-    displayName: string | undefined;
+    name: string;
+    displayName: string;
     normalizedName: string | undefined;
     description: string | undefined;
     grantedPermissions: string[] | undefined;
@@ -2033,20 +1989,20 @@ export class CreateRoleDto implements ICreateRoleDto {
 }
 
 export interface ICreateRoleDto {
-    name: string | undefined;
-    displayName: string | undefined;
+    name: string;
+    displayName: string;
     normalizedName: string | undefined;
     description: string | undefined;
     grantedPermissions: string[] | undefined;
 }
 
 export class RoleDto implements IRoleDto {
-    name: string | undefined;
-    displayName: string | undefined;
+    name: string;
+    displayName: string;
     normalizedName: string | undefined;
     description: string | undefined;
     grantedPermissions: string[] | undefined;
-    id: number;
+    id: number | undefined;
 
     constructor(data?: IRoleDto) {
         if (data) {
@@ -2103,21 +2059,72 @@ export class RoleDto implements IRoleDto {
 }
 
 export interface IRoleDto {
-    name: string | undefined;
-    displayName: string | undefined;
+    name: string;
+    displayName: string;
     normalizedName: string | undefined;
     description: string | undefined;
     grantedPermissions: string[] | undefined;
-    id: number;
+    id: number | undefined;
+}
+
+export class ListResultDtoOfRoleListDto implements IListResultDtoOfRoleListDto {
+    items: RoleListDto[] | undefined;
+
+    constructor(data?: IListResultDtoOfRoleListDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            if (Array.isArray(data["items"])) {
+                this.items = [] as any;
+                for (let item of data["items"])
+                    this.items.push(RoleListDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): ListResultDtoOfRoleListDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new ListResultDtoOfRoleListDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        if (Array.isArray(this.items)) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data; 
+    }
+
+    clone(): ListResultDtoOfRoleListDto {
+        const json = this.toJSON();
+        let result = new ListResultDtoOfRoleListDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IListResultDtoOfRoleListDto {
+    items: RoleListDto[] | undefined;
 }
 
 export class RoleListDto implements IRoleListDto {
     name: string | undefined;
     displayName: string | undefined;
-    isStatic: boolean;
-    isDefault: boolean;
-    creationTime: moment.Moment;
-    id: number;
+    isStatic: boolean | undefined;
+    isDefault: boolean | undefined;
+    creationTime: moment.Moment | undefined;
+    id: number | undefined;
 
     constructor(data?: IRoleListDto) {
         if (data) {
@@ -2168,16 +2175,16 @@ export class RoleListDto implements IRoleListDto {
 export interface IRoleListDto {
     name: string | undefined;
     displayName: string | undefined;
-    isStatic: boolean;
-    isDefault: boolean;
-    creationTime: moment.Moment;
-    id: number;
+    isStatic: boolean | undefined;
+    isDefault: boolean | undefined;
+    creationTime: moment.Moment | undefined;
+    id: number | undefined;
 }
 
-export class RoleListDtoListResultDto implements IRoleListDtoListResultDto {
-    items: RoleListDto[] | undefined;
+export class ListResultDtoOfPermissionDto implements IListResultDtoOfPermissionDto {
+    items: PermissionDto[] | undefined;
 
-    constructor(data?: IRoleListDtoListResultDto) {
+    constructor(data?: IListResultDtoOfPermissionDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2191,14 +2198,14 @@ export class RoleListDtoListResultDto implements IRoleListDtoListResultDto {
             if (Array.isArray(data["items"])) {
                 this.items = [] as any;
                 for (let item of data["items"])
-                    this.items.push(RoleListDto.fromJS(item));
+                    this.items.push(PermissionDto.fromJS(item));
             }
         }
     }
 
-    static fromJS(data: any): RoleListDtoListResultDto {
+    static fromJS(data: any): ListResultDtoOfPermissionDto {
         data = typeof data === 'object' ? data : {};
-        let result = new RoleListDtoListResultDto();
+        let result = new ListResultDtoOfPermissionDto();
         result.init(data);
         return result;
     }
@@ -2213,23 +2220,23 @@ export class RoleListDtoListResultDto implements IRoleListDtoListResultDto {
         return data; 
     }
 
-    clone(): RoleListDtoListResultDto {
+    clone(): ListResultDtoOfPermissionDto {
         const json = this.toJSON();
-        let result = new RoleListDtoListResultDto();
+        let result = new ListResultDtoOfPermissionDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IRoleListDtoListResultDto {
-    items: RoleListDto[] | undefined;
+export interface IListResultDtoOfPermissionDto {
+    items: PermissionDto[] | undefined;
 }
 
 export class PermissionDto implements IPermissionDto {
     name: string | undefined;
     displayName: string | undefined;
     description: string | undefined;
-    id: number;
+    id: number | undefined;
 
     constructor(data?: IPermissionDto) {
         if (data) {
@@ -2277,172 +2284,11 @@ export interface IPermissionDto {
     name: string | undefined;
     displayName: string | undefined;
     description: string | undefined;
-    id: number;
-}
-
-export class PermissionDtoListResultDto implements IPermissionDtoListResultDto {
-    items: PermissionDto[] | undefined;
-
-    constructor(data?: IPermissionDtoListResultDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            if (Array.isArray(data["items"])) {
-                this.items = [] as any;
-                for (let item of data["items"])
-                    this.items.push(PermissionDto.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): PermissionDtoListResultDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new PermissionDtoListResultDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        return data; 
-    }
-
-    clone(): PermissionDtoListResultDto {
-        const json = this.toJSON();
-        let result = new PermissionDtoListResultDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IPermissionDtoListResultDto {
-    items: PermissionDto[] | undefined;
-}
-
-export class RoleEditDto implements IRoleEditDto {
-    name: string | undefined;
-    displayName: string | undefined;
-    description: string | undefined;
-    isStatic: boolean;
-    id: number;
-
-    constructor(data?: IRoleEditDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.displayName = data["displayName"];
-            this.description = data["description"];
-            this.isStatic = data["isStatic"];
-            this.id = data["id"];
-        }
-    }
-
-    static fromJS(data: any): RoleEditDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new RoleEditDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["displayName"] = this.displayName;
-        data["description"] = this.description;
-        data["isStatic"] = this.isStatic;
-        data["id"] = this.id;
-        return data; 
-    }
-
-    clone(): RoleEditDto {
-        const json = this.toJSON();
-        let result = new RoleEditDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IRoleEditDto {
-    name: string | undefined;
-    displayName: string | undefined;
-    description: string | undefined;
-    isStatic: boolean;
-    id: number;
-}
-
-export class FlatPermissionDto implements IFlatPermissionDto {
-    name: string | undefined;
-    displayName: string | undefined;
-    description: string | undefined;
-
-    constructor(data?: IFlatPermissionDto) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.name = data["name"];
-            this.displayName = data["displayName"];
-            this.description = data["description"];
-        }
-    }
-
-    static fromJS(data: any): FlatPermissionDto {
-        data = typeof data === 'object' ? data : {};
-        let result = new FlatPermissionDto();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["name"] = this.name;
-        data["displayName"] = this.displayName;
-        data["description"] = this.description;
-        return data; 
-    }
-
-    clone(): FlatPermissionDto {
-        const json = this.toJSON();
-        let result = new FlatPermissionDto();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IFlatPermissionDto {
-    name: string | undefined;
-    displayName: string | undefined;
-    description: string | undefined;
+    id: number | undefined;
 }
 
 export class GetRoleForEditOutput implements IGetRoleForEditOutput {
-    role: RoleEditDto;
+    role: RoleEditDto | undefined;
     permissions: FlatPermissionDto[] | undefined;
     grantedPermissionNames: string[] | undefined;
 
@@ -2503,16 +2349,126 @@ export class GetRoleForEditOutput implements IGetRoleForEditOutput {
 }
 
 export interface IGetRoleForEditOutput {
-    role: RoleEditDto;
+    role: RoleEditDto | undefined;
     permissions: FlatPermissionDto[] | undefined;
     grantedPermissionNames: string[] | undefined;
 }
 
-export class RoleDtoPagedResultDto implements IRoleDtoPagedResultDto {
-    totalCount: number;
+export class RoleEditDto implements IRoleEditDto {
+    name: string;
+    displayName: string;
+    description: string | undefined;
+    isStatic: boolean | undefined;
+    id: number | undefined;
+
+    constructor(data?: IRoleEditDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.displayName = data["displayName"];
+            this.description = data["description"];
+            this.isStatic = data["isStatic"];
+            this.id = data["id"];
+        }
+    }
+
+    static fromJS(data: any): RoleEditDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new RoleEditDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        data["description"] = this.description;
+        data["isStatic"] = this.isStatic;
+        data["id"] = this.id;
+        return data; 
+    }
+
+    clone(): RoleEditDto {
+        const json = this.toJSON();
+        let result = new RoleEditDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IRoleEditDto {
+    name: string;
+    displayName: string;
+    description: string | undefined;
+    isStatic: boolean | undefined;
+    id: number | undefined;
+}
+
+export class FlatPermissionDto implements IFlatPermissionDto {
+    name: string | undefined;
+    displayName: string | undefined;
+    description: string | undefined;
+
+    constructor(data?: IFlatPermissionDto) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.name = data["name"];
+            this.displayName = data["displayName"];
+            this.description = data["description"];
+        }
+    }
+
+    static fromJS(data: any): FlatPermissionDto {
+        data = typeof data === 'object' ? data : {};
+        let result = new FlatPermissionDto();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["name"] = this.name;
+        data["displayName"] = this.displayName;
+        data["description"] = this.description;
+        return data; 
+    }
+
+    clone(): FlatPermissionDto {
+        const json = this.toJSON();
+        let result = new FlatPermissionDto();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IFlatPermissionDto {
+    name: string | undefined;
+    displayName: string | undefined;
+    description: string | undefined;
+}
+
+export class PagedResultDtoOfRoleDto implements IPagedResultDtoOfRoleDto {
+    totalCount: number | undefined;
     items: RoleDto[] | undefined;
 
-    constructor(data?: IRoleDtoPagedResultDto) {
+    constructor(data?: IPagedResultDtoOfRoleDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2532,9 +2488,9 @@ export class RoleDtoPagedResultDto implements IRoleDtoPagedResultDto {
         }
     }
 
-    static fromJS(data: any): RoleDtoPagedResultDto {
+    static fromJS(data: any): PagedResultDtoOfRoleDto {
         data = typeof data === 'object' ? data : {};
-        let result = new RoleDtoPagedResultDto();
+        let result = new PagedResultDtoOfRoleDto();
         result.init(data);
         return result;
     }
@@ -2550,22 +2506,73 @@ export class RoleDtoPagedResultDto implements IRoleDtoPagedResultDto {
         return data; 
     }
 
-    clone(): RoleDtoPagedResultDto {
+    clone(): PagedResultDtoOfRoleDto {
         const json = this.toJSON();
-        let result = new RoleDtoPagedResultDto();
+        let result = new PagedResultDtoOfRoleDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IRoleDtoPagedResultDto {
-    totalCount: number;
+export interface IPagedResultDtoOfRoleDto {
+    totalCount: number | undefined;
     items: RoleDto[] | undefined;
+}
+
+export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {
+    application: ApplicationInfoDto | undefined;
+    user: UserLoginInfoDto | undefined;
+    tenant: TenantLoginInfoDto | undefined;
+
+    constructor(data?: IGetCurrentLoginInformationsOutput) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.application = data["application"] ? ApplicationInfoDto.fromJS(data["application"]) : <any>undefined;
+            this.user = data["user"] ? UserLoginInfoDto.fromJS(data["user"]) : <any>undefined;
+            this.tenant = data["tenant"] ? TenantLoginInfoDto.fromJS(data["tenant"]) : <any>undefined;
+        }
+    }
+
+    static fromJS(data: any): GetCurrentLoginInformationsOutput {
+        data = typeof data === 'object' ? data : {};
+        let result = new GetCurrentLoginInformationsOutput();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["application"] = this.application ? this.application.toJSON() : <any>undefined;
+        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
+        data["tenant"] = this.tenant ? this.tenant.toJSON() : <any>undefined;
+        return data; 
+    }
+
+    clone(): GetCurrentLoginInformationsOutput {
+        const json = this.toJSON();
+        let result = new GetCurrentLoginInformationsOutput();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IGetCurrentLoginInformationsOutput {
+    application: ApplicationInfoDto | undefined;
+    user: UserLoginInfoDto | undefined;
+    tenant: TenantLoginInfoDto | undefined;
 }
 
 export class ApplicationInfoDto implements IApplicationInfoDto {
     version: string | undefined;
-    releaseDate: moment.Moment;
+    releaseDate: moment.Moment | undefined;
     features: { [key: string]: boolean; } | undefined;
 
     constructor(data?: IApplicationInfoDto) {
@@ -2622,7 +2629,7 @@ export class ApplicationInfoDto implements IApplicationInfoDto {
 
 export interface IApplicationInfoDto {
     version: string | undefined;
-    releaseDate: moment.Moment;
+    releaseDate: moment.Moment | undefined;
     features: { [key: string]: boolean; } | undefined;
 }
 
@@ -2631,7 +2638,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
     surname: string | undefined;
     userName: string | undefined;
     emailAddress: string | undefined;
-    id: number;
+    id: number | undefined;
 
     constructor(data?: IUserLoginInfoDto) {
         if (data) {
@@ -2682,13 +2689,13 @@ export interface IUserLoginInfoDto {
     surname: string | undefined;
     userName: string | undefined;
     emailAddress: string | undefined;
-    id: number;
+    id: number | undefined;
 }
 
 export class TenantLoginInfoDto implements ITenantLoginInfoDto {
     tenancyName: string | undefined;
     name: string | undefined;
-    id: number;
+    id: number | undefined;
 
     constructor(data?: ITenantLoginInfoDto) {
         if (data) {
@@ -2733,66 +2740,15 @@ export class TenantLoginInfoDto implements ITenantLoginInfoDto {
 export interface ITenantLoginInfoDto {
     tenancyName: string | undefined;
     name: string | undefined;
-    id: number;
-}
-
-export class GetCurrentLoginInformationsOutput implements IGetCurrentLoginInformationsOutput {
-    application: ApplicationInfoDto;
-    user: UserLoginInfoDto;
-    tenant: TenantLoginInfoDto;
-
-    constructor(data?: IGetCurrentLoginInformationsOutput) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(data?: any) {
-        if (data) {
-            this.application = data["application"] ? ApplicationInfoDto.fromJS(data["application"]) : <any>undefined;
-            this.user = data["user"] ? UserLoginInfoDto.fromJS(data["user"]) : <any>undefined;
-            this.tenant = data["tenant"] ? TenantLoginInfoDto.fromJS(data["tenant"]) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): GetCurrentLoginInformationsOutput {
-        data = typeof data === 'object' ? data : {};
-        let result = new GetCurrentLoginInformationsOutput();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["application"] = this.application ? this.application.toJSON() : <any>undefined;
-        data["user"] = this.user ? this.user.toJSON() : <any>undefined;
-        data["tenant"] = this.tenant ? this.tenant.toJSON() : <any>undefined;
-        return data; 
-    }
-
-    clone(): GetCurrentLoginInformationsOutput {
-        const json = this.toJSON();
-        let result = new GetCurrentLoginInformationsOutput();
-        result.init(json);
-        return result;
-    }
-}
-
-export interface IGetCurrentLoginInformationsOutput {
-    application: ApplicationInfoDto;
-    user: UserLoginInfoDto;
-    tenant: TenantLoginInfoDto;
+    id: number | undefined;
 }
 
 export class CreateTenantDto implements ICreateTenantDto {
-    tenancyName: string | undefined;
-    name: string | undefined;
-    adminEmailAddress: string | undefined;
+    tenancyName: string;
+    name: string;
+    adminEmailAddress: string;
     connectionString: string | undefined;
-    isActive: boolean;
+    isActive: boolean | undefined;
 
     constructor(data?: ICreateTenantDto) {
         if (data) {
@@ -2839,18 +2795,18 @@ export class CreateTenantDto implements ICreateTenantDto {
 }
 
 export interface ICreateTenantDto {
-    tenancyName: string | undefined;
-    name: string | undefined;
-    adminEmailAddress: string | undefined;
+    tenancyName: string;
+    name: string;
+    adminEmailAddress: string;
     connectionString: string | undefined;
-    isActive: boolean;
+    isActive: boolean | undefined;
 }
 
 export class TenantDto implements ITenantDto {
-    tenancyName: string | undefined;
-    name: string | undefined;
-    isActive: boolean;
-    id: number;
+    tenancyName: string;
+    name: string;
+    isActive: boolean | undefined;
+    id: number | undefined;
 
     constructor(data?: ITenantDto) {
         if (data) {
@@ -2895,17 +2851,17 @@ export class TenantDto implements ITenantDto {
 }
 
 export interface ITenantDto {
-    tenancyName: string | undefined;
-    name: string | undefined;
-    isActive: boolean;
-    id: number;
+    tenancyName: string;
+    name: string;
+    isActive: boolean | undefined;
+    id: number | undefined;
 }
 
-export class TenantDtoPagedResultDto implements ITenantDtoPagedResultDto {
-    totalCount: number;
+export class PagedResultDtoOfTenantDto implements IPagedResultDtoOfTenantDto {
+    totalCount: number | undefined;
     items: TenantDto[] | undefined;
 
-    constructor(data?: ITenantDtoPagedResultDto) {
+    constructor(data?: IPagedResultDtoOfTenantDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -2925,9 +2881,9 @@ export class TenantDtoPagedResultDto implements ITenantDtoPagedResultDto {
         }
     }
 
-    static fromJS(data: any): TenantDtoPagedResultDto {
+    static fromJS(data: any): PagedResultDtoOfTenantDto {
         data = typeof data === 'object' ? data : {};
-        let result = new TenantDtoPagedResultDto();
+        let result = new PagedResultDtoOfTenantDto();
         result.init(data);
         return result;
     }
@@ -2943,23 +2899,23 @@ export class TenantDtoPagedResultDto implements ITenantDtoPagedResultDto {
         return data; 
     }
 
-    clone(): TenantDtoPagedResultDto {
+    clone(): PagedResultDtoOfTenantDto {
         const json = this.toJSON();
-        let result = new TenantDtoPagedResultDto();
+        let result = new PagedResultDtoOfTenantDto();
         result.init(json);
         return result;
     }
 }
 
-export interface ITenantDtoPagedResultDto {
-    totalCount: number;
+export interface IPagedResultDtoOfTenantDto {
+    totalCount: number | undefined;
     items: TenantDto[] | undefined;
 }
 
 export class AuthenticateModel implements IAuthenticateModel {
-    userNameOrEmailAddress: string | undefined;
-    password: string | undefined;
-    rememberClient: boolean;
+    userNameOrEmailAddress: string;
+    password: string;
+    rememberClient: boolean | undefined;
 
     constructor(data?: IAuthenticateModel) {
         if (data) {
@@ -3002,16 +2958,16 @@ export class AuthenticateModel implements IAuthenticateModel {
 }
 
 export interface IAuthenticateModel {
-    userNameOrEmailAddress: string | undefined;
-    password: string | undefined;
-    rememberClient: boolean;
+    userNameOrEmailAddress: string;
+    password: string;
+    rememberClient: boolean | undefined;
 }
 
 export class AuthenticateResultModel implements IAuthenticateResultModel {
     accessToken: string | undefined;
     encryptedAccessToken: string | undefined;
-    expireInSeconds: number;
-    userId: number;
+    expireInSeconds: number | undefined;
+    userId: number | undefined;
 
     constructor(data?: IAuthenticateResultModel) {
         if (data) {
@@ -3058,8 +3014,8 @@ export class AuthenticateResultModel implements IAuthenticateResultModel {
 export interface IAuthenticateResultModel {
     accessToken: string | undefined;
     encryptedAccessToken: string | undefined;
-    expireInSeconds: number;
-    userId: number;
+    expireInSeconds: number | undefined;
+    userId: number | undefined;
 }
 
 export class ExternalLoginProviderInfoModel implements IExternalLoginProviderInfoModel {
@@ -3110,9 +3066,9 @@ export interface IExternalLoginProviderInfoModel {
 }
 
 export class ExternalAuthenticateModel implements IExternalAuthenticateModel {
-    authProvider: string | undefined;
-    providerKey: string | undefined;
-    providerAccessCode: string | undefined;
+    authProvider: string;
+    providerKey: string;
+    providerAccessCode: string;
 
     constructor(data?: IExternalAuthenticateModel) {
         if (data) {
@@ -3155,16 +3111,16 @@ export class ExternalAuthenticateModel implements IExternalAuthenticateModel {
 }
 
 export interface IExternalAuthenticateModel {
-    authProvider: string | undefined;
-    providerKey: string | undefined;
-    providerAccessCode: string | undefined;
+    authProvider: string;
+    providerKey: string;
+    providerAccessCode: string;
 }
 
 export class ExternalAuthenticateResultModel implements IExternalAuthenticateResultModel {
     accessToken: string | undefined;
     encryptedAccessToken: string | undefined;
-    expireInSeconds: number;
-    waitingForActivation: boolean;
+    expireInSeconds: number | undefined;
+    waitingForActivation: boolean | undefined;
 
     constructor(data?: IExternalAuthenticateResultModel) {
         if (data) {
@@ -3211,18 +3167,18 @@ export class ExternalAuthenticateResultModel implements IExternalAuthenticateRes
 export interface IExternalAuthenticateResultModel {
     accessToken: string | undefined;
     encryptedAccessToken: string | undefined;
-    expireInSeconds: number;
-    waitingForActivation: boolean;
+    expireInSeconds: number | undefined;
+    waitingForActivation: boolean | undefined;
 }
 
 export class CreateUserDto implements ICreateUserDto {
-    userName: string | undefined;
-    name: string | undefined;
-    surname: string | undefined;
-    emailAddress: string | undefined;
-    isActive: boolean;
+    userName: string;
+    name: string;
+    surname: string;
+    emailAddress: string;
+    isActive: boolean | undefined;
     roleNames: string[] | undefined;
-    password: string | undefined;
+    password: string;
 
     constructor(data?: ICreateUserDto) {
         if (data) {
@@ -3281,26 +3237,26 @@ export class CreateUserDto implements ICreateUserDto {
 }
 
 export interface ICreateUserDto {
-    userName: string | undefined;
-    name: string | undefined;
-    surname: string | undefined;
-    emailAddress: string | undefined;
-    isActive: boolean;
+    userName: string;
+    name: string;
+    surname: string;
+    emailAddress: string;
+    isActive: boolean | undefined;
     roleNames: string[] | undefined;
-    password: string | undefined;
+    password: string;
 }
 
 export class UserDto implements IUserDto {
-    userName: string | undefined;
-    name: string | undefined;
-    surname: string | undefined;
-    emailAddress: string | undefined;
-    isActive: boolean;
+    userName: string;
+    name: string;
+    surname: string;
+    emailAddress: string;
+    isActive: boolean | undefined;
     fullName: string | undefined;
     lastLoginTime: moment.Moment | undefined;
-    creationTime: moment.Moment;
+    creationTime: moment.Moment | undefined;
     roleNames: string[] | undefined;
-    id: number;
+    id: number | undefined;
 
     constructor(data?: IUserDto) {
         if (data) {
@@ -3365,22 +3321,22 @@ export class UserDto implements IUserDto {
 }
 
 export interface IUserDto {
-    userName: string | undefined;
-    name: string | undefined;
-    surname: string | undefined;
-    emailAddress: string | undefined;
-    isActive: boolean;
+    userName: string;
+    name: string;
+    surname: string;
+    emailAddress: string;
+    isActive: boolean | undefined;
     fullName: string | undefined;
     lastLoginTime: moment.Moment | undefined;
-    creationTime: moment.Moment;
+    creationTime: moment.Moment | undefined;
     roleNames: string[] | undefined;
-    id: number;
+    id: number | undefined;
 }
 
-export class RoleDtoListResultDto implements IRoleDtoListResultDto {
+export class ListResultDtoOfRoleDto implements IListResultDtoOfRoleDto {
     items: RoleDto[] | undefined;
 
-    constructor(data?: IRoleDtoListResultDto) {
+    constructor(data?: IListResultDtoOfRoleDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3399,9 +3355,9 @@ export class RoleDtoListResultDto implements IRoleDtoListResultDto {
         }
     }
 
-    static fromJS(data: any): RoleDtoListResultDto {
+    static fromJS(data: any): ListResultDtoOfRoleDto {
         data = typeof data === 'object' ? data : {};
-        let result = new RoleDtoListResultDto();
+        let result = new ListResultDtoOfRoleDto();
         result.init(data);
         return result;
     }
@@ -3416,20 +3372,20 @@ export class RoleDtoListResultDto implements IRoleDtoListResultDto {
         return data; 
     }
 
-    clone(): RoleDtoListResultDto {
+    clone(): ListResultDtoOfRoleDto {
         const json = this.toJSON();
-        let result = new RoleDtoListResultDto();
+        let result = new ListResultDtoOfRoleDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IRoleDtoListResultDto {
+export interface IListResultDtoOfRoleDto {
     items: RoleDto[] | undefined;
 }
 
 export class ChangeUserLanguageDto implements IChangeUserLanguageDto {
-    languageName: string | undefined;
+    languageName: string;
 
     constructor(data?: IChangeUserLanguageDto) {
         if (data) {
@@ -3468,12 +3424,12 @@ export class ChangeUserLanguageDto implements IChangeUserLanguageDto {
 }
 
 export interface IChangeUserLanguageDto {
-    languageName: string | undefined;
+    languageName: string;
 }
 
 export class ChangePasswordDto implements IChangePasswordDto {
-    currentPassword: string | undefined;
-    newPassword: string | undefined;
+    currentPassword: string;
+    newPassword: string;
 
     constructor(data?: IChangePasswordDto) {
         if (data) {
@@ -3514,14 +3470,14 @@ export class ChangePasswordDto implements IChangePasswordDto {
 }
 
 export interface IChangePasswordDto {
-    currentPassword: string | undefined;
-    newPassword: string | undefined;
+    currentPassword: string;
+    newPassword: string;
 }
 
 export class ResetPasswordDto implements IResetPasswordDto {
-    adminPassword: string | undefined;
+    adminPassword: string;
     userId: number;
-    newPassword: string | undefined;
+    newPassword: string;
 
     constructor(data?: IResetPasswordDto) {
         if (data) {
@@ -3564,16 +3520,16 @@ export class ResetPasswordDto implements IResetPasswordDto {
 }
 
 export interface IResetPasswordDto {
-    adminPassword: string | undefined;
+    adminPassword: string;
     userId: number;
-    newPassword: string | undefined;
+    newPassword: string;
 }
 
-export class UserDtoPagedResultDto implements IUserDtoPagedResultDto {
-    totalCount: number;
+export class PagedResultDtoOfUserDto implements IPagedResultDtoOfUserDto {
+    totalCount: number | undefined;
     items: UserDto[] | undefined;
 
-    constructor(data?: IUserDtoPagedResultDto) {
+    constructor(data?: IPagedResultDtoOfUserDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -3593,9 +3549,9 @@ export class UserDtoPagedResultDto implements IUserDtoPagedResultDto {
         }
     }
 
-    static fromJS(data: any): UserDtoPagedResultDto {
+    static fromJS(data: any): PagedResultDtoOfUserDto {
         data = typeof data === 'object' ? data : {};
-        let result = new UserDtoPagedResultDto();
+        let result = new PagedResultDtoOfUserDto();
         result.init(data);
         return result;
     }
@@ -3611,17 +3567,23 @@ export class UserDtoPagedResultDto implements IUserDtoPagedResultDto {
         return data; 
     }
 
-    clone(): UserDtoPagedResultDto {
+    clone(): PagedResultDtoOfUserDto {
         const json = this.toJSON();
-        let result = new UserDtoPagedResultDto();
+        let result = new PagedResultDtoOfUserDto();
         result.init(json);
         return result;
     }
 }
 
-export interface IUserDtoPagedResultDto {
-    totalCount: number;
+export interface IPagedResultDtoOfUserDto {
+    totalCount: number | undefined;
     items: UserDto[] | undefined;
+}
+
+export enum IsTenantAvailableOutputState {
+    _1 = 1,
+    _2 = 2,
+    _3 = 3,
 }
 
 export class ApiException extends Error {

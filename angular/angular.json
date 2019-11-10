@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "MyAbp": {
+    "MyAbpLearn": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -113,21 +113,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "MyAbp:build"
+            "browserTarget": "MyAbpLearn:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "MyAbp:build:production"
+              "browserTarget": "MyAbpLearn:build:production"
             },
             "hmr": {
-              "browserTarget": "MyAbp:build:hmr"
+              "browserTarget": "MyAbpLearn:build:hmr"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MyAbp:build"
+            "browserTarget": "MyAbpLearn:build"
           }
         },
         "test": {
@@ -213,7 +213,7 @@
         }
       }
     },
-    "MyAbp-e2e": {
+    "MyAbpLearn-e2e": {
       "root": "",
       "sourceRoot": "",
       "projectType": "application",
@@ -222,7 +222,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "./protractor.conf.js",
-            "devServerTarget": "MyAbp:serve"
+            "devServerTarget": "MyAbpLearn:serve"
           }
         },
         "lint": {
@@ -237,7 +237,7 @@
       }
     }
   },
-  "defaultProject": "MyAbp",
+  "defaultProject": "MyAbpLearn",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",

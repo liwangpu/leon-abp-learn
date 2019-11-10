@@ -11,7 +11,7 @@ export class AppConsts {
     };
 
     static readonly localization = {
-        defaultLocalizationSourceName: 'MyAbp'
+        defaultLocalizationSourceName: 'MyAbpLearn'
     };
 
     static readonly authorization = {
